@@ -117,7 +117,7 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Dialog', 'Notify'],
     },
 
     // animations: 'all', // --- includes all animations
@@ -143,7 +143,7 @@ export default defineConfig((ctx) => {
       // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
-        'render', // keep this as last one
+        'render', // keep this as the last one
       ],
 
       // extendPackageJson (json) {},
@@ -228,7 +228,7 @@ export default defineConfig((ctx) => {
        *
        * Each entry in the list should be a relative filename to /src-bex/
        *
-       * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
+       * @example [ 'my-script.ts', 'subfolder/my-other-script.js' ]
        */
       extraScripts: [],
     },
