@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@microsoft/office-js':
+        specifier: ^1.1.99
+        version: 1.1.99
       '@quasar/extras':
         specifier: ^1.16.4
         version: 1.16.15
@@ -373,6 +376,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@microsoft/office-js@1.1.99':
+    resolution: {integrity: sha512-05nhlVEZSWQ3akQwTkQq1LDudR2ubK2QzxWb/zDv2Nb1CgEBMVgxoZ+oh/nqVFBPipG07e1AquhP+KJbOwavaQ==}
+    engines: {node: '>=6.9.4'}
 
   '@microsoft/teams-manifest@0.1.7':
     resolution: {integrity: sha512-StbPytfhLv8x6s3ZPoqnxoDxgV/f4orXUIl/5VHWOaXPgqigNEtxBGVX2LvyZ+G3P44iAXXqieSeWOSR6JRxDw==}
@@ -2996,6 +3003,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@microsoft/office-js@1.1.99': {}
 
   '@microsoft/teams-manifest@0.1.7':
     dependencies:

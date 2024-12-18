@@ -10,10 +10,10 @@
     "format": "prettier --write \"**/*.{html,js,json,md,scss,ts,vue}\" --ignore-path .gitignore",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
     "quasar:dev": "quasar dev",
-    "quasar:build": "quasar build",
-    "quasar:postinstall": "quasar prepare"
+    "quasar:build": "quasar build"
   },
   "dependencies": {
+    "@microsoft/office-js": "^1.1.99",
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
     "pinia": "^2.0.11",

@@ -2,12 +2,14 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers'
-import { readFileSync } from 'node:fs'
+import { copyFileSync, cpSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ensureCertificatesAreInstalled } from 'office-addin-dev-certs'
 import { validateManifest } from 'office-addin-manifest'
+
+const MANIFEST_PATH = 'manifest.xml'
 
 const enforceManifest = async (manifestPath: string) => {
   console.info('Validating manifest file...')
@@ -20,6 +22,7 @@ const enforceManifest = async (manifestPath: string) => {
 
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig((ctx) => {
+  // noinspection HtmlUnknownTarget
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -45,6 +48,12 @@ export default defineConfig((ctx) => {
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
+
+    htmlVariables: {
+      officeJsScript: ctx.dev
+        ? '<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>'
+        : '<script src="libs/office-js/office.js"></script>',
+    },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
@@ -75,7 +84,14 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      // extendViteConf(viteConf) {
+      //   viteConf.base = ''
+      //   if (viteConf.build) {
+      //     viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
+      //     viteConf.build.rollupOptions.external = ['@microsoft/office-js']
+      //   }
+      //   console.log(viteConf.build)
+      // },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -113,11 +129,22 @@ export default defineConfig((ctx) => {
         await ensureCertificatesAreInstalled()
         console.info('CA certificate is installed')
 
-        await enforceManifest('manifest.xml')
+        await enforceManifest(MANIFEST_PATH)
       },
 
       beforeBuild: async () => {
-        await enforceManifest('manifest.xml')
+        await enforceManifest(MANIFEST_PATH)
+      },
+
+      afterBuild: async ({ quasarConf }) => {
+        if (quasarConf.build?.distDir) {
+          cpSync(
+            'node_modules/@microsoft/office-js/dist',
+            `${quasarConf.build.distDir}/libs/office-js`,
+            { recursive: true },
+          )
+          copyFileSync(MANIFEST_PATH, `${quasarConf.build.distDir}/manifest.xml`)
+        }
       },
     },
 

@@ -30,10 +30,6 @@ class OfficeHelper {
   }
 
   get info(): OfficeInfo | undefined {
-    if (!this._isAvailable()) {
-      return
-    }
-
     return this._officeInfo
   }
 
@@ -75,6 +71,10 @@ class OfficeHelper {
     }
     if (!this._officeInfo) {
       console.warn('Office.js is not loaded')
+      return false
+    }
+    if (!this._officeInfo.host) {
+      console.warn('Office host is not available')
       return false
     }
     return true
