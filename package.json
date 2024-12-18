@@ -9,8 +9,6 @@
   "scripts": {
     "format": "prettier --write \"**/*.{html,js,json,md,scss,ts,vue}\" --ignore-path .gitignore",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
-    "office:setup": "office-addin-dev-certs install",
-    "office:validate": "office-addin-manifest validate manifest.xml",
     "quasar:dev": "quasar dev",
     "quasar:build": "quasar build",
     "quasar:postinstall": "quasar prepare"
