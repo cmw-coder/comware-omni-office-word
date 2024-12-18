@@ -2,7 +2,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers'
-import { copyFileSync, cpSync, readFileSync } from 'node:fs'
+import { copyFileSync, cpSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -10,6 +10,7 @@ import { ensureCertificatesAreInstalled } from 'office-addin-dev-certs'
 import { validateManifest } from 'office-addin-manifest'
 
 const MANIFEST_PATH = 'manifest.xml'
+const OFFICE_JS_SCRIPT_PLACEHOLDER = '%OFFICE_JS_SCRIPT%'
 
 const enforceManifest = async (manifestPath: string) => {
   console.info('Validating manifest file...')
@@ -22,7 +23,6 @@ const enforceManifest = async (manifestPath: string) => {
 
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig((ctx) => {
-  // noinspection HtmlUnknownTarget
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -52,7 +52,7 @@ export default defineConfig((ctx) => {
     htmlVariables: {
       officeJsScript: ctx.dev
         ? '<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>'
-        : '<script src="libs/office-js/office.js"></script>',
+        : OFFICE_JS_SCRIPT_PLACEHOLDER,
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -84,14 +84,9 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf(viteConf) {
-      //   viteConf.base = ''
-      //   if (viteConf.build) {
-      //     viteConf.build.rollupOptions = viteConf.build.rollupOptions || {}
-      //     viteConf.build.rollupOptions.external = ['@microsoft/office-js']
-      //   }
-      //   console.log(viteConf.build)
-      // },
+      extendViteConf(viteConf) {
+        viteConf.base = ''
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -138,12 +133,21 @@ export default defineConfig((ctx) => {
 
       afterBuild: async ({ quasarConf }) => {
         if (quasarConf.build?.distDir) {
+          copyFileSync(MANIFEST_PATH, `${quasarConf.build.distDir}/manifest.xml`)
+
           cpSync(
             'node_modules/@microsoft/office-js/dist',
             `${quasarConf.build.distDir}/libs/office-js`,
             { recursive: true },
           )
-          copyFileSync(MANIFEST_PATH, `${quasarConf.build.distDir}/manifest.xml`)
+          // noinspection HtmlUnknownTarget
+          writeFileSync(
+            `${quasarConf.build.distDir}/index.html`,
+            readFileSync(`${quasarConf.build.distDir}/index.html`, 'utf-8').replace(
+              OFFICE_JS_SCRIPT_PLACEHOLDER,
+              '<script src="./libs/office-js/office.js"></script>',
+            ),
+          )
         }
       },
     },
