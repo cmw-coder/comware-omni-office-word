@@ -2,7 +2,21 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers'
+import { readFileSync } from 'node:fs'
+import { homedir } from 'node:os'
+import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { ensureCertificatesAreInstalled } from 'office-addin-dev-certs'
+import { validateManifest } from 'office-addin-manifest'
+
+const enforceManifest = async (manifestPath: string) => {
+  console.info('Validating manifest file...')
+  if (!(await validateManifest(manifestPath))) {
+    console.error('Manifest file is invalid')
+    process.exit(1)
+  }
+  console.info('Manifest file is valid')
+}
 
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig((ctx) => {
@@ -13,7 +27,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'axios', 'init'],
+    boot: ['axios', 'bus', 'i18n', 'office'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
@@ -81,7 +95,6 @@ export default defineConfig((ctx) => {
             include: [fileURLToPath(new URL('./src/i18n', import.meta.url))],
           },
         ],
-
         [
           'vite-plugin-checker',
           {
@@ -94,11 +107,27 @@ export default defineConfig((ctx) => {
           { server: false },
         ],
       ],
+
+      beforeDev: async () => {
+        console.info('Ensuring CA certificate is installed...')
+        await ensureCertificatesAreInstalled()
+        console.info('CA certificate is installed')
+
+        await enforceManifest('manifest.xml')
+      },
+
+      beforeBuild: async () => {
+        await enforceManifest('manifest.xml')
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      // https: true,
+      https: {
+        key: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.key`)),
+        cert: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.crt`)),
+        ca: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/ca.crt`)),
+      },
       open: false, // opens a browser window automatically
     },
 
