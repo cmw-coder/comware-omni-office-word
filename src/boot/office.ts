@@ -1,4 +1,4 @@
-import { boot } from 'quasar/wrappers'
+import { defineBoot } from '#q-app/wrappers'
 
 interface OfficeInfo {
   host: Office.HostType | null
@@ -30,16 +30,42 @@ class OfficeHelper {
   }
 
   get info(): OfficeInfo | undefined {
-    return this._officeInfo
-  }
-
-  onParagraphChanged(callback: (event: Office.EventType) => void) {
-    if (!this._initialized) {
-      console.warn('OfficeHelper is not initialized')
+    if (!this._isAvailable()) {
       return
     }
 
-    Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, callback)
+    return this._officeInfo
+  }
+
+  onSelectionChanged(
+    callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
+  ) {
+    if (!this._isAvailable()) {
+      return false
+    }
+
+    Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, async () => {
+      await Word.run(async (context) => {
+        const selection = context.document.getSelection()
+        selection.load()
+        await context.sync()
+
+        const prefixRange = selection.expandTo(context.document.body.getRange('Start'))
+        prefixRange.load()
+        await context.sync()
+
+        const suffixRange = selection.expandTo(context.document.body.getRange('End'))
+        suffixRange.load()
+        await context.sync()
+
+        await callback({
+          prefix: prefixRange.text.split(NEW_LINE_REGEX).join('\n'),
+          infix: selection.text.split(NEW_LINE_REGEX).join('\n'),
+          suffix: suffixRange.text.split(NEW_LINE_REGEX).join('\n'),
+        })
+      })
+    })
+    return true
   }
 
   private _isAvailable() {
@@ -55,8 +81,18 @@ class OfficeHelper {
   }
 }
 
+declare module 'vue' {
+  // noinspection JSUnusedGlobalSymbols
+  interface ComponentCustomProperties {
+    $officeHelper: OfficeHelper
+  }
+}
+
+export const NEW_LINE_REGEX = /\r\n|\r|\n/g
+
 export const officeHelper = new OfficeHelper()
 
-export default boot(async () => {
+export default defineBoot(async ({ app }) => {
   await officeHelper.init()
+  app.config.globalProperties.$officeHelper = officeHelper
 })
