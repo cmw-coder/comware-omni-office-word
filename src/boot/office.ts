@@ -33,35 +33,52 @@ class OfficeHelper {
     return this._officeInfo
   }
 
-  onSelectionChanged(
+  async insertText(text: string) {
+    if (!this._isAvailable()) {
+      return false
+    }
+
+    await Word.run(async (context) => {
+      const range = context.document.getSelection()
+      range.insertText(text, 'End')
+      await context.sync()
+    })
+  }
+
+  async registerParagraphChangeEvent(
     callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
   ) {
     if (!this._isAvailable()) {
       return false
     }
 
-    Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, async () => {
-      await Word.run(async (context) => {
-        const selection = context.document.getSelection()
-        selection.load()
-        await context.sync()
+    await Word.run(async (context) => {
+      context.document.onParagraphChanged.add(async () => {
+        await Word.run(async (context) => {
+          const selection = context.document.getSelection()
+          selection.load()
+          await context.sync()
 
-        const prefixRange = selection.expandTo(context.document.body.getRange('Start'))
-        prefixRange.load()
-        await context.sync()
+          const prefixRange = selection.expandTo(context.document.body.getRange('Start'))
+          prefixRange.load()
+          await context.sync()
 
-        const suffixRange = selection.expandTo(context.document.body.getRange('End'))
-        suffixRange.load()
-        await context.sync()
+          const suffixRange = selection.expandTo(context.document.body.getRange('End'))
+          suffixRange.load()
+          await context.sync()
 
-        await callback({
-          prefix: prefixRange.text.split(NEW_LINE_REGEX).join('\n'),
-          infix: selection.text.split(NEW_LINE_REGEX).join('\n'),
-          suffix: suffixRange.text.split(NEW_LINE_REGEX).join('\n'),
+          await callback({
+            prefix: prefixRange.text.split(NEW_LINE_REGEX).join('\n'),
+            infix: selection.text.split(NEW_LINE_REGEX).join('\n'),
+            suffix: suffixRange.text.split(NEW_LINE_REGEX).join('\n'),
+          })
         })
+        await context.sync()
       })
+      await context.sync()
+
+      console.log('Added event handler for when content is changed in paragraphs.')
     })
-    return true
   }
 
   private _isAvailable() {
