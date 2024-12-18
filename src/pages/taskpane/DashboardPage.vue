@@ -70,7 +70,7 @@ interface GenerateBody {
   details: object
 }
 
-const completion = ref('aaa')
+const completion = ref('')
 const error = ref<Error>()
 const isNewLineShouldStop = ref(false)
 const isSuffixInPrompt = ref(true)
