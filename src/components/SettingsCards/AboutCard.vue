@@ -23,13 +23,13 @@ const i18n = i18nSubPath('components.SettingsCards.AboutCard')
         </q-item-section>
         <q-item-section side>
           <div class="row">
-            <q-chip icon="mdi-tag-outline">
+            <q-chip dense icon="mdi-tag-outline">
               {{ PackageJson.version }}
             </q-chip>
-            <q-chip icon="mdi-microsoft-office">
+            <q-chip dense icon="mdi-microsoft-office">
               {{ officeHelper.info?.host }}
             </q-chip>
-            <q-chip icon="mdi-laptop">
+            <q-chip dense icon="mdi-laptop">
               {{ officeHelper.info?.platform }}
             </q-chip>
           </div>
