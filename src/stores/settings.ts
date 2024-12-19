@@ -8,7 +8,7 @@ export const useSettingsStore = defineStore(
   'settings',
   () => {
     const darkMode = ref<Dark['mode']>(Dark.mode)
-    const singleParagraph = ref(false)
+    const singleParagraph = ref(true)
 
     const darkModeColorAndIcon = computed(() => {
       switch (darkMode.value) {
