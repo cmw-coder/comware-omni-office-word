@@ -1,13 +1,7 @@
 <template>
   <q-page class="column q-gutter-y-md q-pa-md">
     <q-card>
-      <q-card-section v-if="error" class="text-negative">
-        <div class="text-body1 text-bold">Error</div>
-        <div style="white-space: pre-line">
-          {{ error }}
-        </div>
-      </q-card-section>
-      <q-card-section v-else class="q-gutter-y-sm">
+      <q-card-section class="q-gutter-y-sm">
         <div class="row items-center justify-between">
           <div class="text-body1 text-bold">Completion</div>
           <q-btn
@@ -20,7 +14,10 @@
             @click="manualCompletion"
           />
         </div>
-        <div style="white-space: pre-line">
+        <div v-if="error" class="text-negative" style="white-space: pre-line">
+          {{ error }}
+        </div>
+        <div v-else style="white-space: pre-line">
           {{ completion }}
         </div>
         <q-btn
@@ -66,11 +63,14 @@ const manualCompletion = async () => {
 }
 
 const triggerCompletion = async (context: ContentContext) => {
+  error.value = undefined
   const promptElements = new PromptElements(context)
   if (!promptElements.contentContext.infix.length) {
     const result = await completionManager.generate(promptElements)
     if (result) {
-      completion.value = singleParagraph.value ? (result.split(NEW_LINE_REGEX)[0] ?? result) : result
+      completion.value = singleParagraph.value
+        ? (result.split(NEW_LINE_REGEX)[0] ?? result)
+        : result
     } else {
       error.value = new Error('Failed to generate completion')
     }

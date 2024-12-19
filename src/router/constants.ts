@@ -31,7 +31,7 @@ export const routes: RouteRecordRaw[] = [
           header: () => import('layouts/headers/TaskpaneHeader.vue'),
           default: () => import('pages/taskpane/SettingsPage.vue'),
         },
-      }
+      },
     ],
   },
 

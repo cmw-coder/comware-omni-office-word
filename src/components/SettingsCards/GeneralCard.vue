@@ -28,6 +28,4 @@ const i18n = i18nSubPath('components.SettingsCards.GeneralCard')
   </q-card>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

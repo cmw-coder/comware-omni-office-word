@@ -91,12 +91,12 @@ export class PromptElements {
   }
 
   async stringify() {
-    const list:string[] = []
+    const list: string[] = []
     list.push('<|fim_prefix|>')
     list.push(this.contentContext.prefix)
     list.push('<|fim_suffix|>')
     list.push(this.contentContext.suffix)
     list.push('<|fim_middle|>')
-    return list.join('');
+    return list.join('')
   }
 }
