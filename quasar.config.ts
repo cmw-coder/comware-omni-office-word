@@ -128,6 +128,10 @@ export default defineConfig((ctx) => {
       },
 
       beforeBuild: async () => {
+        console.info('Ensuring CA certificate is installed...')
+        await ensureCertificatesAreInstalled()
+        console.info('CA certificate is installed')
+
         await enforceManifest(MANIFEST_PATH)
       },
 
