@@ -28,7 +28,18 @@
         </div>
       </q-card-section>
       <q-card-section v-else class="q-gutter-y-sm">
-        <div class="text-body1 text-bold">Completion</div>
+        <div class="row items-center justify-between">
+          <div class="text-body1 text-bold">Completion</div>
+          <q-btn
+            class="q-ml-md"
+            color="accent"
+            dense
+            icon="mdi-refresh"
+            label="Generate"
+            no-caps
+            @click="triggerCompletion"
+          />
+        </div>
         <div style="white-space: pre-line">
           {{ completion }}
         </div>
@@ -108,13 +119,28 @@ const insertCompletion = () => {
   officeHelper.insertText(completion.value)
 }
 
-onMounted(async () => {
-  await officeHelper.registerParagraphChangeEvent(async (data) => {
+const triggerCompletion = async () => {
+  loading.value = true
+  const context = await officeHelper.retrieveContext()
+  prefix.value = context.prefix.substring(context.prefix.length - 4000)
+  suffix.value = context.suffix.substring(0, 1000)
+  try {
+    if (!context.infix.length) {
+      await generateCompletion()
+    }
+  } catch (e) {
+    error.value = <Error>e
+  }
+  loading.value = false
+}
+
+onMounted(() => {
+  officeHelper.registerSelectionChangedEvent(async (context) => {
     loading.value = true
-    prefix.value = data.prefix.substring(data.prefix.length - 4000)
-    suffix.value = data.suffix.substring(0, 1000)
+    prefix.value = context.prefix.substring(context.prefix.length - 4000)
+    suffix.value = context.suffix.substring(0, 1000)
     try {
-      if (!data.infix.length) {
+      if (!context.infix.length) {
         await generateCompletion()
       }
     } catch (e) {

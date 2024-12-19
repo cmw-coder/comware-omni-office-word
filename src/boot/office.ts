@@ -45,7 +45,7 @@ class OfficeHelper {
     })
   }
 
-  async registerParagraphChangeEvent(
+  async registerParagraphChangedEvent(
     callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
   ) {
     if (!this._isAvailable()) {
@@ -54,30 +54,48 @@ class OfficeHelper {
 
     await Word.run(async (context) => {
       context.document.onParagraphChanged.add(async () => {
-        await Word.run(async (context) => {
-          const selection = context.document.getSelection()
-          selection.load()
-          await context.sync()
-
-          const prefixRange = selection.expandTo(context.document.body.getRange('Start'))
-          prefixRange.load()
-          await context.sync()
-
-          const suffixRange = selection.expandTo(context.document.body.getRange('End'))
-          suffixRange.load()
-          await context.sync()
-
-          await callback({
-            prefix: prefixRange.text.split(NEW_LINE_REGEX).join('\n'),
-            infix: selection.text.split(NEW_LINE_REGEX).join('\n'),
-            suffix: suffixRange.text.split(NEW_LINE_REGEX).join('\n'),
-          })
-        })
-        await context.sync()
+        await callback(await this.retrieveContext())
       })
       await context.sync()
 
       console.log('Added event handler for when content is changed in paragraphs.')
+    })
+  }
+
+  registerSelectionChangedEvent(
+    callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
+  ) {
+    if (!this._isAvailable()) {
+      return false
+    }
+
+    Office.context.document.addHandlerAsync(Office.EventType.DocumentSelectionChanged, async () => {
+      await callback(await this.retrieveContext())
+    })
+    return true
+  }
+
+  async retrieveContext(): Promise<{ prefix: string; infix: string; suffix: string }> {
+    return new Promise((resolve) => {
+      Word.run(async (context) => {
+        const selection = context.document.getSelection()
+        selection.load()
+        await context.sync()
+
+        const prefixRange = selection.expandTo(context.document.body.getRange('Start'))
+        prefixRange.load()
+        await context.sync()
+
+        const suffixRange = selection.expandTo(context.document.body.getRange('End'))
+        suffixRange.load()
+        await context.sync()
+
+        resolve({
+          prefix: prefixRange.text.split(NEW_LINE_REGEX).join('\n'),
+          infix: selection.text.split(NEW_LINE_REGEX).join('\n'),
+          suffix: suffixRange.text.split(NEW_LINE_REGEX).join('\n'),
+        })
+      })
     })
   }
 
