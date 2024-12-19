@@ -154,11 +154,13 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
-      https: ctx.dev ? {
-        key: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.key`)),
-        cert: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.crt`)),
-        ca: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/ca.crt`)),
-      } : undefined,
+      https: ctx.dev
+        ? {
+            key: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.key`)),
+            cert: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/localhost.crt`)),
+            ca: readFileSync(resolve(`${homedir()}/.office-addin-dev-certs/ca.crt`)),
+          }
+        : {},
       open: false, // opens a browser window automatically
     },
 
