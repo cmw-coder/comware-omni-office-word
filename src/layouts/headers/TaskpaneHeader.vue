@@ -1,20 +1,36 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { i18nSubPath } from 'src/utils/common'
+
+const routes = [
+  {
+    label: 'dashboard',
+    icon: 'view_quilt',
+    available: true,
+    route: 'dashboard',
+  },
+  {
+    label: 'settings',
+    icon: 'mdi-cog',
+    available: true,
+    route: 'settings',
+  },
+]
+
+const i18n = i18nSubPath('layouts.headers.TaskpaneHeader')
+</script>
 
 <template>
   <q-header class="bg-primary text-white" height-hint="98">
-    <q-toolbar>
-      <q-toolbar-title>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-        </q-avatar>
-        Title
-      </q-toolbar-title>
-    </q-toolbar>
-
     <q-tabs align="left">
-      <q-route-tab to="/page1" label="Page One" />
-      <q-route-tab to="/page2" label="Page Two" />
-      <q-route-tab to="/page3" label="Page Three" />
+      <q-route-tab
+        v-for="route in routes"
+        :key="route.label"
+        :disable="!route.available"
+        :icon="route.icon"
+        :label="i18n(`routes.${route.label}`)"
+        no-caps
+        :to="route.route"
+      />
     </q-tabs>
   </q-header>
 </template>

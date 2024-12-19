@@ -3,26 +3,26 @@ export default {
     SettingsCards: {
       AboutCard: {
         labels: {
-          title: 'About',
-          addInsInfo: 'Add-ins Info',
+          title: '关于',
+          addInsInfo: '加载项信息',
         },
       },
       CompletionCard: {
         labels: {
-          title: 'Completion',
-          singleParagraph: 'Single paragraph completion',
+          title: '补全',
+          singleParagraph: '单段落补全',
         },
       },
       GeneralCard: {
         labels: {
-          title: 'General',
-          theme: 'Add-ins Theme',
+          title: '通用',
+          theme: '加载项主题',
         },
       },
     },
     ThemeButton: {
       labels: {
-        toggleTheme: 'Toggle Theme',
+        toggleTheme: '切换主题',
       },
     },
   },
@@ -30,8 +30,8 @@ export default {
     headers: {
       TaskpaneHeader: {
         routes: {
-          dashboard: 'Dashboard',
-          settings: 'Settings',
+          dashboard: '仪表板',
+          settings: '设置',
         },
       },
     },

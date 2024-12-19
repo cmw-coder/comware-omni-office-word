@@ -24,6 +24,14 @@ export const routes: RouteRecordRaw[] = [
           default: () => import('pages/taskpane/DashboardPage.vue'),
         },
       },
+      {
+        name: 'taskpane-settings',
+        path: 'settings',
+        components: {
+          header: () => import('layouts/headers/TaskpaneHeader.vue'),
+          default: () => import('pages/taskpane/SettingsPage.vue'),
+        },
+      }
     ],
   },
 

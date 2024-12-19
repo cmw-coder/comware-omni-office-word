@@ -1,5 +1,7 @@
 import { defineBoot } from '#q-app/wrappers'
 
+import type { ContentContext } from 'src/types/CompletionManager/types'
+
 interface OfficeInfo {
   host: Office.HostType | null
   platform: Office.PlatformType | null
@@ -45,9 +47,7 @@ class OfficeHelper {
     })
   }
 
-  async registerParagraphChangedEvent(
-    callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
-  ) {
+  async registerParagraphChangedEvent(callback: (contentContext: ContentContext) => Promise<void>) {
     if (!this._isAvailable()) {
       return false
     }
@@ -62,9 +62,7 @@ class OfficeHelper {
     })
   }
 
-  registerSelectionChangedEvent(
-    callback: (data: { prefix: string; infix: string; suffix: string }) => Promise<void>,
-  ) {
+  registerSelectionChangedEvent(callback: (contentContext: ContentContext) => Promise<void>) {
     if (!this._isAvailable()) {
       return false
     }
@@ -75,7 +73,7 @@ class OfficeHelper {
     return true
   }
 
-  async retrieveContext(): Promise<{ prefix: string; infix: string; suffix: string }> {
+  async retrieveContext(): Promise<ContentContext> {
     return new Promise((resolve) => {
       Word.run(async (context) => {
         const selection = context.document.getSelection()
