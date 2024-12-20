@@ -1,7 +1,7 @@
 {
   "name": "comware-omni-office-word",
   "version": "1.0.0",
-  "description": "A Microsoft Word add-ins powered by Quasar",
+  "description": "A Microsoft Word add-ins made by Comware",
   "productName": "Comware Omni",
   "author": "ParticleG <particle_g@outlook.com>",
   "type": "module",

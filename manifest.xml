@@ -9,8 +9,8 @@
     <DefaultLocale>zh-CN</DefaultLocale>
     <DisplayName DefaultValue="Comware Omni"/>
     <Description DefaultValue="A Microsoft Word add-ins powered by Quasar"/>
-    <IconUrl DefaultValue="https://localhost:9000/icons/favicon-32x32.png"/>
-    <HighResolutionIconUrl DefaultValue="https://localhost:9000/icons/favicon-128x128.png"/>
+    <IconUrl DefaultValue="https://localhost:9000/icons/light/appIcon-64.png"/>
+    <HighResolutionIconUrl DefaultValue="https://localhost:9000/icons/light/appIcon-512.png"/>
     <SupportUrl DefaultValue="https://localhost:9000"/>
     <AppDomains>
         <AppDomain>localhost:9000</AppDomain>
@@ -38,11 +38,12 @@
                             <Group id="CommandsGroup">
                                 <Label resid="CommandsGroup.Label"/>
                                 <Icon>
-                                    <bt:Image size="16" resid="Icon.16x16"/>
-                                    <bt:Image size="32" resid="Icon.32x32"/>
-                                    <bt:Image size="80" resid="Icon.80x80"/>
-                                    <bt:Image size="96" resid="Icon.96x96"/>
-                                    <bt:Image size="128" resid="Icon.128x128"/>
+                                    <bt:Image size="16" resid="Icon.16"/>
+                                    <bt:Image size="32" resid="Icon.32"/>
+                                    <bt:Image size="80" resid="Icon.80"/>
+                                    <bt:Image size="128" resid="Icon.128"/>
+                                    <bt:Image size="256" resid="Icon.256"/>
+                                    <bt:Image size="512" resid="Icon.512"/>
                                 </Icon>
                                 <Control xsi:type="Button" id="TaskpaneButton">
                                     <Label resid="TaskpaneButton.Label"/>
@@ -51,11 +52,11 @@
                                         <Description resid="TaskpaneButton.Tooltip"/>
                                     </Supertip>
                                     <Icon>
-                                        <bt:Image size="16" resid="Icon.16x16"/>
-                                        <bt:Image size="32" resid="Icon.32x32"/>
-                                        <bt:Image size="80" resid="Icon.80x80"/>
+                                        <bt:Image size="16" resid="Icon.16"/>
+                                        <bt:Image size="32" resid="Icon.32"/>
+                                        <bt:Image size="80" resid="Icon.80"/>
                                         <bt:Image size="96" resid="Icon.96x96"/>
-                                        <bt:Image size="128" resid="Icon.128x128"/>
+                                        <bt:Image size="128" resid="Icon.128"/>
                                     </Icon>
                                     <Action xsi:type="ShowTaskpane">
                                         <TaskpaneId>ButtonId1</TaskpaneId>
@@ -70,11 +71,12 @@
         </Hosts>
         <Resources>
             <bt:Images>
-                <bt:Image id="Icon.16x16" DefaultValue="https://localhost:9000/icons/favicon-16x16.png"/>
-                <bt:Image id="Icon.32x32" DefaultValue="https://localhost:9000/icons/favicon-32x32.png"/>
-                <bt:Image id="Icon.80x80" DefaultValue="https://localhost:9000/icons/favicon-80x80.png"/>
-                <bt:Image id="Icon.96x96" DefaultValue="https://localhost:9000/icons/favicon-96x96.png"/>
-                <bt:Image id="Icon.128x128" DefaultValue="https://localhost:9000/icons/favicon-128x128.png"/>
+                <bt:Image id="Icon.16" DefaultValue="https://localhost:9000/icons/light/appIcon-16.png"/>
+                <bt:Image id="Icon.32" DefaultValue="https://localhost:9000/icons/light/appIcon-32.png"/>
+                <bt:Image id="Icon.80" DefaultValue="https://localhost:9000/icons/light/appIcon-80.png"/>
+                <bt:Image id="Icon.128" DefaultValue="https://localhost:9000/icons/light/appIcon-128.png"/>
+                <bt:Image id="Icon.256" DefaultValue="https://localhost:9000/icons/light/appIcon-256.png"/>
+                <bt:Image id="Icon.512" DefaultValue="https://localhost:9000/icons/light/appIcon-512.png"/>
             </bt:Images>
             <bt:Urls>
                 <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
