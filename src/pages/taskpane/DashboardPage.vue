@@ -4,8 +4,8 @@
       <q-card-section
         class="q-gutter-y-sm"
         :class="{
-          'text-accent': result === GenerateResult.Empty,
-          'text-negative': result === GenerateResult.Error,
+          'text-accent': generateResult === GenerateResult.Empty,
+          'text-negative': generateResult === GenerateResult.Error,
         }"
       >
         <div class="row items-center justify-between">
@@ -21,12 +21,14 @@
           />
         </div>
         <div style="white-space: pre-line">
-          {{ data }}
+          {{ generateData }}
         </div>
         <q-btn
           class="full-width"
           color="primary"
-          :disable="result !== GenerateResult.Cancel && result !== GenerateResult.Success"
+          :disable="
+            generateResult !== GenerateResult.Cancel && generateResult !== GenerateResult.Success
+          "
           label="Insert Completion"
           no-caps
           @click="insertCompletion"
@@ -52,14 +54,14 @@ import { i18nSubPath } from 'src/utils/common'
 
 const { singleParagraph } = storeToRefs(useSettingsStore())
 
-const data = ref('')
 const loading = ref(false)
-const result = ref<GenerateResult>()
+const generateData = ref('')
+const generateResult = ref<GenerateResult>()
 
 const i18n = i18nSubPath('pages.taskpane.DashboardPage')
 
 const insertCompletion = () => {
-  officeHelper.insertText(data.value)
+  officeHelper.insertText(generateData.value)
 }
 
 const manualCompletion = async () => {
@@ -71,23 +73,32 @@ const manualCompletion = async () => {
 const triggerCompletion = async (context: ContentContext) => {
   const promptElements = new PromptElements(context)
   if (!promptElements.contentContext.infix.length) {
-    const { result: _result, data: _data } = await completionManager.generate(promptElements)
-    result.value = _result
-    switch (result.value) {
+    const { result, data } = await completionManager.generate(promptElements)
+    console.log({ result, data })
+    switch (result) {
       case GenerateResult.Cancel: {
-        console.log('Cancelled')
+        generateResult.value = result
         break
       }
       case GenerateResult.Error: {
-        data.value = _data
+        generateData.value = data
+        generateResult.value = result
         break
       }
       case GenerateResult.Empty: {
-        data.value = i18n('labels.noNeedToComplete')
+        generateData.value = i18n('labels.noNeedToComplete')
+        generateResult.value = result
         break
       }
       case GenerateResult.Success: {
-        data.value = singleParagraph.value ? (_data.split(NEW_LINE_REGEX)[0] ?? _data) : _data
+        const processed = singleParagraph.value ? (data.split(NEW_LINE_REGEX)[0] ?? data) : data
+        if (processed.length) {
+          generateData.value = processed
+          generateResult.value = result
+        } else {
+          generateData.value = i18n('labels.noNeedToComplete')
+          generateResult.value = GenerateResult.Empty
+        }
         break
       }
     }

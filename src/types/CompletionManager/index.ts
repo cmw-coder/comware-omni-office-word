@@ -1,7 +1,7 @@
 import { isCancel } from 'axios'
 
 import { GenerateResult, LRUCache } from './types'
-import type { GenerateResponse, PromptElements } from './types';
+import type { GenerateResponse, PromptElements } from './types'
 import { generate } from './utils'
 
 export class CompletionManager {
@@ -14,7 +14,7 @@ export class CompletionManager {
     if (completionCached) {
       return {
         result: GenerateResult.Success,
-        data: completionCached
+        data: completionCached,
       }
     }
 
@@ -32,7 +32,6 @@ export class CompletionManager {
           data: result,
         }
       }
-
       return {
         result: GenerateResult.Empty,
         data: '',
