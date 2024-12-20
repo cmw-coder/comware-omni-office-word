@@ -1,4 +1,4 @@
-# Comware Coder Word Add-ins (cmw-coder-word)
+# Comware Omni (comware-omni-office-word)
 
 A Microsoft Word add-ins powered by Quasar
 

@@ -1,4 +1,4 @@
-name: cmw-coder-word CI
+name: comware-omni-office-word CI
 
 on:
   push:
@@ -45,5 +45,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cmw-coder-word_${{ needs.get-info.outputs.commitHash }}_${{ GITHUB.RUN_NUMBER }}
+          name: comware-omni-office-word_${{ needs.get-info.outputs.commitHash }}_${{ GITHUB.RUN_NUMBER }}
           path: ${{ env.OUTPUT_FOLDER }}

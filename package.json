@@ -1,8 +1,8 @@
 {
-  "name": "cmw-coder-word",
+  "name": "comware-omni-office-word",
   "version": "1.0.0",
   "description": "A Microsoft Word add-ins powered by Quasar",
-  "productName": "Comware Coder Word Add-ins",
+  "productName": "Comware Omni",
   "author": "ParticleG <particle_g@outlook.com>",
   "type": "module",
   "private": true,

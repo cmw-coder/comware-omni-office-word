@@ -274,8 +274,7 @@ export default defineConfig((ctx) => {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
-        appId: 'cmw-coder-word',
+        appId: 'comware-omni-office-word',
       },
     },
 
