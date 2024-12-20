@@ -8,7 +8,7 @@
     <ProviderName>Particle_G</ProviderName>
     <DefaultLocale>zh-CN</DefaultLocale>
     <DisplayName DefaultValue="Comware Omni"/>
-    <Description DefaultValue="A Microsoft Word add-ins powered by Quasar"/>
+    <Description DefaultValue="A Microsoft Word add-ins created by Comware"/>
     <IconUrl DefaultValue="https://localhost:9000/icons/light/appIcon-64.png"/>
     <HighResolutionIconUrl DefaultValue="https://localhost:9000/icons/light/appIcon-512.png"/>
     <SupportUrl DefaultValue="https://localhost:9000"/>
