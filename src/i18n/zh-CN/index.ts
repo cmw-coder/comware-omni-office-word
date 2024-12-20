@@ -4,7 +4,8 @@ export default {
       AboutCard: {
         labels: {
           title: '关于',
-          addInsInfo: '加载项信息',
+          environment: '环境',
+          version: '版本',
         },
       },
       CompletionCard: {
@@ -38,7 +39,11 @@ export default {
   },
   pages: {
     taskpane: {
-      DashboardPage: {},
+      DashboardPage: {
+        labels: {
+          noNeedToComplete: '无需补全',
+        },
+      },
       SettingsPage: {
         labels: {},
       },

@@ -14,25 +14,32 @@ const i18n = i18nSubPath('components.SettingsCards.AboutCard')
       </div>
     </q-card-section>
     <q-separator />
-    <q-list>
+    <q-list separator>
       <q-item>
         <q-item-section>
           <q-item-label>
-            {{ i18n('labels.addInsInfo') }}
+            {{ i18n('labels.environment') }}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
           <div class="row">
-            <q-chip dense icon="mdi-tag-outline">
-              {{ PackageJson.version }}
-            </q-chip>
-            <q-chip dense icon="mdi-microsoft-office">
+            <q-chip icon="mdi-microsoft-office">
               {{ officeHelper.info?.host }}
             </q-chip>
-            <q-chip dense icon="mdi-laptop">
+            <q-chip icon="mdi-laptop">
               {{ officeHelper.info?.platform }}
             </q-chip>
           </div>
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
+          <q-item-label>
+            {{ i18n('labels.version') }}
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          {{ PackageJson.version }}
         </q-item-section>
       </q-item>
     </q-list>

@@ -75,6 +75,18 @@ export class LRUCache<T> {
   }
 }
 
+export enum GenerateResult {
+  Cancel = 'Cancel',
+  Empty = 'Empty',
+  Error = 'Error',
+  Success = 'Success',
+}
+
+export interface GenerateResponse {
+  result: GenerateResult
+  data: string
+}
+
 export interface ContentContext {
   prefix: string
   infix: string

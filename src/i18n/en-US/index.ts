@@ -4,7 +4,8 @@ export default {
       AboutCard: {
         labels: {
           title: 'About',
-          addInsInfo: 'Add-ins Info',
+          environment: 'Environment',
+          version: 'Version',
         },
       },
       CompletionCard: {
@@ -38,7 +39,11 @@ export default {
   },
   pages: {
     taskpane: {
-      DashboardPage: {},
+      DashboardPage: {
+        labels: {
+          noNeedToComplete: 'No need to complete',
+        },
+      },
       SettingsPage: {
         labels: {},
       },

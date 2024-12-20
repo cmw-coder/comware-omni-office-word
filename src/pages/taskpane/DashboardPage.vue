@@ -1,7 +1,13 @@
 <template>
   <q-page class="column q-gutter-y-md q-pa-md">
     <q-card>
-      <q-card-section class="q-gutter-y-sm">
+      <q-card-section
+        class="q-gutter-y-sm"
+        :class="{
+          'text-accent': result === GenerateResult.Empty,
+          'text-negative': result === GenerateResult.Error,
+        }"
+      >
         <div class="row items-center justify-between">
           <div class="text-body1 text-bold">Completion</div>
           <q-btn
@@ -14,16 +20,13 @@
             @click="manualCompletion"
           />
         </div>
-        <div v-if="error" class="text-negative" style="white-space: pre-line">
-          {{ error }}
-        </div>
-        <div v-else style="white-space: pre-line">
-          {{ completion }}
+        <div style="white-space: pre-line">
+          {{ data }}
         </div>
         <q-btn
           class="full-width"
           color="primary"
-          :disable="!completion.length"
+          :disable="result !== GenerateResult.Cancel && result !== GenerateResult.Success"
           label="Insert Completion"
           no-caps
           @click="insertCompletion"
@@ -42,18 +45,21 @@ import { onMounted, ref } from 'vue'
 
 import { NEW_LINE_REGEX, officeHelper } from 'boot/office'
 import { completionManager } from 'boot/completion'
-import { PromptElements } from 'src/types/CompletionManager/types'
+import { GenerateResult, PromptElements } from 'src/types/CompletionManager/types'
 import type { ContentContext } from 'src/types/CompletionManager/types'
 import { useSettingsStore } from 'stores/settings'
+import { i18nSubPath } from 'src/utils/common'
 
 const { singleParagraph } = storeToRefs(useSettingsStore())
 
-const completion = ref('')
-const error = ref<Error>()
+const data = ref('')
 const loading = ref(false)
+const result = ref<GenerateResult>()
+
+const i18n = i18nSubPath('pages.taskpane.DashboardPage')
 
 const insertCompletion = () => {
-  officeHelper.insertText(completion.value)
+  officeHelper.insertText(data.value)
 }
 
 const manualCompletion = async () => {
@@ -63,16 +69,27 @@ const manualCompletion = async () => {
 }
 
 const triggerCompletion = async (context: ContentContext) => {
-  error.value = undefined
   const promptElements = new PromptElements(context)
   if (!promptElements.contentContext.infix.length) {
-    const result = await completionManager.generate(promptElements)
-    if (result) {
-      completion.value = singleParagraph.value
-        ? (result.split(NEW_LINE_REGEX)[0] ?? result)
-        : result
-    } else {
-      error.value = new Error('Failed to generate completion')
+    const { result: _result, data: _data } = await completionManager.generate(promptElements)
+    result.value = _result
+    switch (result.value) {
+      case GenerateResult.Cancel: {
+        console.log('Cancelled')
+        break
+      }
+      case GenerateResult.Error: {
+        data.value = _data
+        break
+      }
+      case GenerateResult.Empty: {
+        data.value = i18n('labels.noNeedToComplete')
+        break
+      }
+      case GenerateResult.Success: {
+        data.value = singleParagraph.value ? (_data.split(NEW_LINE_REGEX)[0] ?? _data) : _data
+        break
+      }
     }
   }
 }

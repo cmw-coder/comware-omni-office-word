@@ -39,7 +39,7 @@ export const generate = async (inputs: string, signal: AbortSignal) => {
         return_full_text: false,
         seed: null,
         stop: ['/\n', '<|fim_pad|>'],
-        temperature: 0.2,
+        temperature: 0.5,
         top_p: 0.95,
         truncate: null,
       },
