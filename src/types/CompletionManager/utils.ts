@@ -34,7 +34,7 @@ export const generate = async (inputs: string, signal: AbortSignal) => {
         details: true,
         do_sample: true,
         frequency_penalty: 0.01,
-        max_new_tokens: 128,
+        max_new_tokens: 96,
         repetition_penalty: 1.05,
         return_full_text: false,
         seed: null,
