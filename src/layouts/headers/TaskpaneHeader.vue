@@ -21,7 +21,7 @@ const i18n = i18nSubPath('layouts.headers.TaskpaneHeader')
 
 <template>
   <q-header class="bg-primary text-white" height-hint="98">
-    <q-tabs align="left">
+    <q-tabs align="center" dense>
       <q-route-tab
         v-for="route in routes"
         :key="route.label"

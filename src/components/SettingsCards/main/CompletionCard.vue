@@ -6,7 +6,7 @@ import { useSettingsStore } from 'stores/settings'
 
 const { singleParagraph } = storeToRefs(useSettingsStore())
 
-const i18n = i18nSubPath('components.SettingsCards.CompletionCard')
+const i18n = i18nSubPath('components.SettingsCards.main.CompletionCard')
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const i18n = i18nSubPath('components.SettingsCards.CompletionCard')
     </q-card-section>
     <q-separator />
     <q-list separator>
-      <q-item clickable v-ripple>
+      <q-item tag="label" v-ripple>
         <q-item-section>
           <q-item-label>
             {{ i18n('labels.singleParagraph') }}

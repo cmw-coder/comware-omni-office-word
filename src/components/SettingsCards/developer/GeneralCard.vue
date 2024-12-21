@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import DarkModeButton from 'components/ThemeButton.vue'
-import { i18nSubPath } from 'src/utils/common'
+import { storeToRefs } from 'pinia'
 
-const i18n = i18nSubPath('components.SettingsCards.GeneralCard')
+import { i18nSubPath } from 'src/utils/common'
+import { useSettingsStore } from 'stores/settings'
+
+const { developerMode } = storeToRefs(useSettingsStore())
+
+const i18n = i18nSubPath('components.SettingsCards.developer.GeneralCard')
 </script>
 
 <template>
@@ -13,15 +17,15 @@ const i18n = i18nSubPath('components.SettingsCards.GeneralCard')
       </div>
     </q-card-section>
     <q-separator />
-    <q-list separator>
-      <q-item clickable v-ripple>
+    <q-list>
+      <q-item tag="label" v-ripple>
         <q-item-section>
           <q-item-label>
-            {{ i18n('labels.theme') }}
+            {{ i18n('labels.developerMode') }}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <dark-mode-button />
+          <q-toggle v-model="developerMode" />
         </q-item-section>
       </q-item>
     </q-list>
