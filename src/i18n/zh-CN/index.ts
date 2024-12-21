@@ -58,7 +58,7 @@ export default {
           languages: {
             'zh-CN': '简体中文',
             'en-US': '英语（美国）',
-          }
+          },
         },
       },
     },

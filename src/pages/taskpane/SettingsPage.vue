@@ -24,7 +24,6 @@ const pushTab = (tab: string) => {
   tabStack.value.push(currentTab.value)
   currentTab.value = tab
 }
-
 </script>
 
 <template>

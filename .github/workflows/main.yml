@@ -2,7 +2,8 @@ name: comware-omni-office-word CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ ci-*, main ]
+    tags: [ pre*, v* ]
   pull_request:
     branches: [ main ]
 
@@ -30,20 +31,33 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
-
       - name: Install Dependencies and Build
         run: |
           pnpm i
           pnpm run quasar:build
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: comware-omni-office-word_${{ needs.get-info.outputs.commitHash }}_${{ GITHUB.RUN_NUMBER }}
           path: ${{ env.OUTPUT_FOLDER }}
+      - name: Prepare for release
+        if: ${{ startsWith(github.ref, 'refs/tags/pre') || startsWith(github.ref, 'refs/tags/v') }}
+        shell: bash
+        run: |
+          mkdir -p ${{ env.RELEASE_FOLDER }}
+          7z a -tzip -x!manifest.xml ${{ env.RELEASE_FOLDER }}/comware-omni-office-word.zip "${{ env.OUTPUT_FOLDER }}/*"
+          cp ${{ env.OUTPUT_FOLDER }}/manifest.xml ${{ env.RELEASE_FOLDER }}/manifest.xml
+      - name: Upload release
+        if: ${{ startsWith(github.ref, 'refs/tags/pre') || startsWith(github.ref, 'refs/tags/v') }}
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: |
+            ${{ env.RELEASE_FOLDER }}/comware-omni-office-word.zip
+            ${{ env.RELEASE_FOLDER }}/manifest.xml
+          prerelease: ${{ startsWith(github.ref, 'refs/tags/pre') }}
