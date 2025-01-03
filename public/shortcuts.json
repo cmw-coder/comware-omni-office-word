@@ -1,0 +1,33 @@
+{
+  "actions": [
+    {
+      "id": "ShowTaskpane",
+      "type": "ExecuteFunction",
+      "name": "Show task pane (Comware Omni)"
+    },
+    {
+      "id": "HideTaskpane",
+      "type": "ExecuteFunction",
+      "name": "Hide task pane (Comware Omni)"
+    },
+    {
+      "id": "HideTaskpane",
+      "type": "ExecuteFunction",
+      "name": "Hide task pane (Comware Omni)"
+    }
+  ],
+  "shortcuts": [
+    {
+      "action": "ShowTaskpane",
+      "key": {
+        "default": "Ctrl+Alt+Left"
+      }
+    },
+    {
+      "action": "HideTaskpane",
+      "key": {
+        "default": "Ctrl+Alt+Right"
+      }
+    }
+  ]
+}

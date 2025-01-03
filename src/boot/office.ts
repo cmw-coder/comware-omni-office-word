@@ -21,6 +21,21 @@ class OfficeHelper {
 
     if (Office) {
       this._officeInfo = await Office.onReady()
+
+      Office.actions.associate('HideTaskpane', async () => {
+        try {
+          await Office.addin.hide()
+        } catch (error) {
+          console.log(error)
+        }
+      })
+      Office.actions.associate('ShowTaskpane', async () => {
+        try {
+          await Office.addin.showAsTaskpane()
+        } catch (error) {
+          console.log(error)
+        }
+      })
     } else {
       console.warn(
         'Office.js is not loaded.\n' +
@@ -28,6 +43,7 @@ class OfficeHelper {
           'By insert <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script> in your HTML head tag',
       )
     }
+
     this._initialized = true
   }
 

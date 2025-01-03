@@ -12,7 +12,7 @@
                namespace="http://schemas.microsoft.com/office/mailappversionoverrides"/>
     <xs:import schemaLocation="OfficeAppBasicTypesV1_0.xsd"
                namespace="http://schemas.microsoft.com/office/officeappbasictypes/1.0"/>
-    <xs:import schemaLocation="MailAppVersionOverridesV1_1.xsd"
+    <xs:import schemaLocation="TaskPaneAppVersionOverridesV1_0.xsd"
                namespace="http://schemas.microsoft.com/office/taskpaneappversionoverrides"/>
     <xs:simpleType name="NonEmptyString">
         <xs:restriction base="xs:string">

@@ -1,5 +1,10 @@
-<xs:schema id="MailAppVersionOverridesV1_1" elementFormDefault="qualified" version="1.0" targetNamespace="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:import schemaLocation="OfficeAppBasicTypesV1_0.xsd" namespace="http://schemas.microsoft.com/office/officeappbasictypes/1.0"/>
+<xs:schema id="MailAppVersionOverridesV1_1" elementFormDefault="qualified" version="1.0"
+           targetNamespace="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
+           xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import schemaLocation="OfficeAppBasicTypesV1_0.xsd"
+               namespace="http://schemas.microsoft.com/office/officeappbasictypes/1.0"/>
     <xs:simpleType name="EventFunctionExecutionType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="synchronous"/>
@@ -363,7 +368,8 @@
         <xs:complexContent>
             <xs:extension base="ExtensionPoint">
                 <xs:sequence>
-                    <xs:element name="ReportPhishingCustomization" type="ReportPhishingCustomization" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="ReportPhishingCustomization" type="ReportPhishingCustomization" minOccurs="1"
+                                maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -432,7 +438,8 @@
             <xs:extension base="Host">
                 <xs:sequence>
                     <xs:element name="Runtimes" type="Runtimes" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="DesktopFormFactor" type="FormFactorWithSupportsSharedFolders" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="DesktopFormFactor" type="FormFactorWithSupportsSharedFolders" minOccurs="0"
+                                maxOccurs="1"/>
                     <xs:element name="MobileFormFactor" type="FormFactor" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
@@ -493,7 +500,8 @@
             <xs:element name="EquivalentAddins" type="EquivalentAddins" minOccurs="0" maxOccurs="1"/>
             <xs:element name="ConnectedServiceControls" type="ConnectedServiceControls" minOccurs="0" maxOccurs="1"/>
             <xs:element name="ExtendedPermissions" type="ExtendedPermissions" minOccurs="0" maxOccurs="1"/>
-            <xs:any id="VersionOverrides" minOccurs="0" maxOccurs="1" namespace="http://schemas.microsoft.com/office/mailappversionoverrides/1.2" processContents="lax"/>
+            <xs:any id="VersionOverrides" minOccurs="0" maxOccurs="1"
+                    namespace="http://schemas.microsoft.com/office/mailappversionoverrides/1.2" processContents="lax"/>
         </xs:sequence>
     </xs:complexType>
     <xs:element name="VersionOverrides" type="VersionOverridesV1_1"/>
