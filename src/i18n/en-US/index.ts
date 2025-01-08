@@ -46,6 +46,7 @@ export default {
         CompletionCard: {
           labels: {
             title: 'Completion',
+            serviceUrl: 'Service URL',
             singleParagraph: 'Single paragraph completion',
           },
         },

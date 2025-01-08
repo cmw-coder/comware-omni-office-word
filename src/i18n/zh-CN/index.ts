@@ -46,6 +46,7 @@ export default {
         CompletionCard: {
           labels: {
             title: '补全',
+            serviceUrl: '服务 URL',
             singleParagraph: '单段落补全',
           },
         },
