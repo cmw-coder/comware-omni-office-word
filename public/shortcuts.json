@@ -1,32 +1,38 @@
 {
   "actions": [
     {
-      "id": "ShowTaskpane",
+      "id": "ComwareOmniAcceptCandidate",
+      "type": "ExecuteFunction",
+      "name": "Accept Completion Candidate (Comware Omni)"
+    },
+    {
+      "id": "ComwareOmniHideTaskpane",
+      "type": "ExecuteFunction",
+      "name": "Hide task pane (Comware Omni)"
+    },
+    {
+      "id": "ComwareOmniShowTaskpane",
       "type": "ExecuteFunction",
       "name": "Show task pane (Comware Omni)"
-    },
-    {
-      "id": "HideTaskpane",
-      "type": "ExecuteFunction",
-      "name": "Hide task pane (Comware Omni)"
-    },
-    {
-      "id": "HideTaskpane",
-      "type": "ExecuteFunction",
-      "name": "Hide task pane (Comware Omni)"
     }
   ],
   "shortcuts": [
     {
-      "action": "ShowTaskpane",
+      "action": "ComwareOmniAcceptCandidate",
       "key": {
-        "default": "Ctrl+Alt+Left"
+        "default": "Alt+Enter"
       }
     },
     {
-      "action": "HideTaskpane",
+      "action": "ComwareOmniHideTaskpane",
       "key": {
         "default": "Ctrl+Alt+Right"
+      }
+    },
+    {
+      "action": "ComwareOmniShowTaskpane",
+      "key": {
+        "default": "Ctrl+Alt+Left"
       }
     }
   ]
