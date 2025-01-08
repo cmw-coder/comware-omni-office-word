@@ -1,3 +1,5 @@
+import type { ContentContext } from 'src/types/common'
+
 class ListNode<T> {
   public prev: ListNode<T> | null = null
   public next: ListNode<T> | null = null
@@ -84,13 +86,7 @@ export enum GenerateResult {
 
 export interface GenerateResponse {
   result: GenerateResult
-  data: string
-}
-
-export interface ContentContext {
-  prefix: string
-  infix: string
-  suffix: string
+  data: string[]
 }
 
 export class PromptElements {

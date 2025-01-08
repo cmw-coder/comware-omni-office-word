@@ -6,7 +6,7 @@ import { generate } from './utils'
 
 export class CompletionManager {
   private _abortController?: AbortController
-  private _cache = new LRUCache<string>(100)
+  private _cache = new LRUCache<string[]>(100)
 
   async generate(promptElements: PromptElements): Promise<GenerateResponse> {
     const cacheKey = promptElements.contentContext.prefix.trimEnd()
@@ -26,27 +26,27 @@ export class CompletionManager {
         await generate(await promptElements.stringify(), this._abortController.signal)
       ).split('<|fim_pad|>')[0]
       if (result?.length) {
-        this._cache.put(cacheKey, result)
+        this._cache.put(cacheKey, [result])
         return {
           result: GenerateResult.Success,
-          data: result,
+          data: [result],
         }
       }
       return {
         result: GenerateResult.Empty,
-        data: '',
+        data: [],
       }
     } catch (e) {
       if (isCancel(e)) {
         return {
           result: GenerateResult.Cancel,
-          data: '',
+          data: [],
         }
       }
       console.error(e)
       return {
         result: GenerateResult.Error,
-        data: (<Error>e).message,
+        data: [(<Error>e).message],
       }
     }
   }
