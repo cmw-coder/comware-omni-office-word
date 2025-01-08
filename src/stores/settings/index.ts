@@ -3,15 +3,14 @@ import { Dark } from 'quasar'
 import { computed, ref } from 'vue'
 
 import { globalI18n } from 'boot/i18n'
-import type messages from 'src/i18n'
-
-const darkModes: Dark['mode'][] = [false, 'auto', true] as const
-
-type Locales = keyof typeof messages
+import { DARK_MODES, DEFAULT_SERVER_URL_MAP } from 'stores/settings/constants'
+import type { Locales, NetworkZone } from 'stores/settings/types'
+import { checkUrlAccessible } from 'stores/settings/utils'
 
 export const useSettingsStore = defineStore(
   'settings',
   () => {
+    const baseUrl = ref<string>('')
     const darkMode = ref<Dark['mode']>(Dark.mode)
     const developerMode = ref(false)
     const locale = computed({
@@ -21,6 +20,7 @@ export const useSettingsStore = defineStore(
       },
     })
     const singleParagraph = ref(true)
+    const username = ref<string>('')
 
     const darkModeColorAndIcon = computed(() => {
       switch (darkMode.value) {
@@ -37,19 +37,35 @@ export const useSettingsStore = defineStore(
       Dark.set(darkMode.value)
     }
 
+    const detectBaseUrl = async () => {
+      const results = await Promise.all(
+        Object.entries(DEFAULT_SERVER_URL_MAP).map(async ([zone, url]) => ({
+          zone: <NetworkZone>zone,
+          accessible: await checkUrlAccessible(url),
+        })),
+      )
+      const availableNetworkZone = results.find(({ accessible }) => accessible)?.zone
+      if (availableNetworkZone) {
+        baseUrl.value = DEFAULT_SERVER_URL_MAP[availableNetworkZone]
+      }
+    }
+
     const toggleDarkMode = () => {
-      const index = darkModes.indexOf(darkMode.value)
-      darkMode.value = darkModes[(index + 1) % darkModes.length] ?? 'auto'
+      const index = DARK_MODES.indexOf(darkMode.value)
+      darkMode.value = DARK_MODES[(index + 1) % DARK_MODES.length] ?? 'auto'
       applyDarkMode()
     }
 
     return {
+      baseUrl,
       darkMode,
       developerMode,
       locale,
+      username,
       singleParagraph,
       darkModeColorAndIcon,
       applyDarkMode,
+      detectBaseUrl,
       toggleDarkMode,
     }
   },

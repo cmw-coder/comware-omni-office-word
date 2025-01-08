@@ -1,9 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+
 import { useSettingsStore } from 'stores/settings'
+import { onMounted } from 'vue'
 
-const { applyDarkMode } = useSettingsStore()
+const { applyDarkMode, detectBaseUrl } = useSettingsStore()
+const { baseUrl } = storeToRefs(useSettingsStore())
 
-applyDarkMode()
+onMounted(() => {
+  applyDarkMode()
+  if (!baseUrl.value.length) {
+    detectBaseUrl().catch((e) => console.error(e))
+  }
+})
 </script>
 
 <template>
