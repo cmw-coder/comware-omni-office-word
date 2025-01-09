@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import type { ReportSkuDto } from 'src/utils/requests/types'
+import { useSettingsStore } from 'stores/settings'
 
 export const reportSku = async (data: ReportSkuDto[]) => {
   try {
@@ -12,10 +13,8 @@ export const reportSku = async (data: ReportSkuDto[]) => {
         )
         .join('\n'),
     )
-    await axios({
-      url: '/kong/RdTestResourceStatistic/report/summary',
-      method: 'post',
-      data: data,
+    await axios.post('/kong/RdTestResourceStatistic/report/summary', data, {
+      baseURL: useSettingsStore().baseUrl,
     })
     return true
   } catch (e) {
