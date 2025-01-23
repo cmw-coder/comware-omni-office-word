@@ -9,6 +9,8 @@ import { fileURLToPath } from 'node:url'
 import { ensureCertificatesAreInstalled } from 'office-addin-dev-certs'
 import { validateManifest } from 'office-addin-manifest'
 
+import { OFFICE_JS_SCRIPT_TAG } from 'src/constants/common'
+
 const MANIFEST_PATH = 'manifest.xml'
 const OFFICE_JS_SCRIPT_PLACEHOLDER = '%OFFICE_JS_SCRIPT%'
 
@@ -46,9 +48,7 @@ export default defineConfig((ctx) => {
     ],
 
     htmlVariables: {
-      officeJsScript: ctx.dev
-        ? '<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>'
-        : OFFICE_JS_SCRIPT_PLACEHOLDER,
+      officeJsScript: ctx.dev ? OFFICE_JS_SCRIPT_TAG : OFFICE_JS_SCRIPT_PLACEHOLDER,
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build

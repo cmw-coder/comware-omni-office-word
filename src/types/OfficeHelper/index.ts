@@ -1,6 +1,7 @@
-import { NEW_LINE_REGEX } from 'src/constants/common'
+import type { OfficeInfo } from './types'
+
+import { NEW_LINE_REGEX, OFFICE_JS_SCRIPT_TAG } from 'src/constants/common'
 import type { ContentContext } from 'src/types/common'
-import type { OfficeInfo } from 'src/types/OfficeHelper/types'
 
 export class OfficeHelper {
   private _initialized = false
@@ -33,7 +34,7 @@ export class OfficeHelper {
       console.warn(
         'Office.js is not loaded.\n' +
           'Please make sure it is loaded before calling OfficeHelper.init()\n' +
-          'By insert <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script> in your HTML head tag',
+          `By insert ${OFFICE_JS_SCRIPT_TAG} in your HTML head tag`,
       )
     }
 
