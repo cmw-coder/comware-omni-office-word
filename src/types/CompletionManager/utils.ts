@@ -48,3 +48,26 @@ export const generate = async (inputs: string, signal: AbortSignal) => {
   )
   return data.generated_text
 }
+
+export const pseudoGenerate = async (inputs: string, signal: AbortSignal): Promise<string> => {
+  if (signal.aborted) {
+    return Promise.reject(new DOMException('[pseudoGenerate] Aborted.', 'AbortError'))
+  }
+
+  return new Promise((resolve, reject) => {
+    const jobTimeout = setTimeout(
+      () => {
+        signal.removeEventListener('abort', abortHandler)
+        resolve(inputs)
+      },
+      300 + Math.random() * 700,
+    )
+
+    const abortHandler = () => {
+      clearTimeout(jobTimeout)
+      reject(new DOMException('[pseudoGenerate] Aborted.', 'AbortError'))
+    }
+    signal.addEventListener('abort', abortHandler)
+  })
+}
+

@@ -98,7 +98,7 @@ export class PromptElements {
     this.contentContext = context
   }
 
-  async stringify() {
+  stringify() {
     const list: string[] = []
     list.push('<|fim_prefix|>')
     list.push(this.contentContext.prefix)

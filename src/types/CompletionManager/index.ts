@@ -2,7 +2,7 @@ import { isCancel } from 'axios'
 
 import { GenerateResult, LRUCache } from './types'
 import type { GenerateResponse, PromptElements } from './types'
-import { generate } from './utils'
+import { generate, pseudoGenerate } from './utils'
 
 export class CompletionManager {
   private _abortController?: AbortController
@@ -21,9 +21,12 @@ export class CompletionManager {
     this._abortController?.abort()
     this._abortController = new AbortController()
 
+    const inputs = promptElements.stringify()
     try {
       const result = (
-        await generate(await promptElements.stringify(), this._abortController.signal)
+        process.env.DEV
+          ? await pseudoGenerate(inputs, this._abortController.signal)
+          : await generate(inputs, this._abortController.signal)
       ).split('<|fim_pad|>')[0]
       if (result?.length) {
         this._cache.put(cacheKey, [result])

@@ -1,7 +1,8 @@
+import type { CompletionCandidate } from './types'
+import { StatisticsData } from './types'
+
 import type { ContentContext } from 'src/types/common'
 import type { PromptElements } from 'src/types/CompletionManager/types'
-import type { CompletionCandidate } from 'src/types/StatisticManager/types'
-import { StatisticsData } from 'src/types/StatisticManager/types'
 
 export class StatisticManager {
   private _dataMap = new Map<string, StatisticsData>()

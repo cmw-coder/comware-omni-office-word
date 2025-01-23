@@ -1,15 +1,31 @@
 import { DateTime } from 'luxon'
 import { uid } from 'quasar'
 
+import { acceptSku, generateSku } from './utils'
+
 import { NEW_LINE_REGEX } from 'src/constants/common'
 import type { ContentContext } from 'src/types/common'
 import type { PromptElements } from 'src/types/CompletionManager/types'
-import { reportSku } from 'src/utils/requests'
-import { acceptSku, generateSku } from 'src/types/StatisticManager/utils'
 
 export interface CompletionCandidate {
   index: number
   content: string
+}
+
+export interface ReportSkuDto {
+  begin?: number
+  end?: number
+  count: number
+  type: 'AIGC'
+  product: 'WORD'
+  firstClass: 'CODE'
+  secondClass: string
+  skuName: 'ADOPT' | 'GENE' | 'KEEP'
+  user: string
+  userType: 'USER' | 'HOST'
+  extra?: string
+  subType?: string
+  hostName?: string
 }
 
 export class StatisticsData {
@@ -60,14 +76,12 @@ export class StatisticsData {
       this._checkedIndexes.add(0)
       this._lastCheckedIndex = 0
 
-      reportSku([
-        generateSku(
-          this._timestamps.begin,
-          this.currentCandidate()?.content.split(NEW_LINE_REGEX).length,
-          'CMW',
-          this.projectId,
-        ),
-      ]).catch(console.error)
+      generateSku(
+        this._timestamps.begin,
+        this.currentCandidate()?.content.split(NEW_LINE_REGEX).length,
+        'CMW',
+        this.projectId,
+      ).catch(console.error)
     }
   }
 
@@ -103,14 +117,12 @@ export class StatisticsData {
   }
 
   accept() {
-    reportSku([
-      acceptSku(
-        this._timestamps.begin,
-        this.currentCandidate()?.content.split(NEW_LINE_REGEX).length,
-        'CMW',
-        this.projectId,
-      ),
-    ]).catch(console.error)
+    acceptSku(
+      this._timestamps.begin,
+      this.currentCandidate()?.content.split(NEW_LINE_REGEX).length,
+      'CMW',
+      this.projectId,
+    ).catch(console.error)
   }
 
   private _validateCandidate(index: number, content?: string): CompletionCandidate | undefined {
@@ -121,14 +133,12 @@ export class StatisticsData {
     if (!this._checkedIndexes.has(index)) {
       this._checkedIndexes.add(index)
 
-      reportSku([
-        generateSku(
-          this._timestamps.begin,
-          content.split(NEW_LINE_REGEX).length,
-          'CMW',
-          this.projectId,
-        ),
-      ]).catch(console.error)
+      generateSku(
+        this._timestamps.begin,
+        content.split(NEW_LINE_REGEX).length,
+        'CMW',
+        this.projectId,
+      ).catch(console.error)
     }
     this._lastCheckedIndex = index
     return { index, content }
